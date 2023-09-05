@@ -1,0 +1,20 @@
+[
+  {
+    "username": "johndoe",
+    "password": "$2a$10$bB0c5Q0S0fAo8Y3.exwNYOby4TkAa0fKlQZYlc.j.W7ZXt7Abq6bS",
+    "email": "johndoe@example.com",
+    "stripeCustomerId": "cus_OZp0uEY9zydjNp"
+  },
+  {
+    "username": "johndeer",
+    "password": "$2a$10$J1C1KprV6lQqcRqTQ3z.zu4ZObc6lGCl7UC993p9e9yKZUHGzlSre",
+    "email": "johndeer@example.com",
+    "stripeCustomerId": "cus_Oa3yWHOQ9BtcHn"
+  },
+  {
+    "username": "emmis",
+    "password": "$2a$10$n8DzgfAqBZD0i/Bq7ecJ2ueZbRCuzMeaSHNpy8QovjXI71w9gmLMa",
+    "email": "emmis@example.com",
+    "stripeCustomerId": "cus_Oa4XlBVUB1Zd37"
+  }
+]

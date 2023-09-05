@@ -1,0 +1,29 @@
+### Register a New Customer ###
+
+POST http://localhost:5000/api/register
+Content-Type: application/json
+
+{
+  "username": "emmis",
+  "password": "password123",
+  "email": "emmis@example.com"
+}
+
+###
+POST http://localhost:5000/api/login
+Content-Type: application/json
+
+{
+  "username": "johndeer",
+  "password": "password123"
+}
+
+###
+POST http://localhost:5000/api/logout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5kZWVyIiwiaWF0IjoxNjkzOTIxNzU2LCJleHAiOjE2OTM5Mjg5NTZ9.rFb6Xpf0pHS9kuwn9iv4ZndkABGmhRZ5UxIa4n99F3Q
+
+
+###
+
+GET http://localhost:5000/api/products
