@@ -12,6 +12,7 @@ const jsonFilePath = path.join(__dirname, "..", "data", "customers.json");
 const getProducts = async (req, res) => {
   try {
     const products = await stripe.products.list({
+      limit: 10,
       expand: ["data.default_price"],
     });
 
