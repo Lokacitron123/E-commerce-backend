@@ -4,9 +4,9 @@ POST http://localhost:5000/api/register
 Content-Type: application/json
 
 {
-  "username": "emmis",
+  "username": "erik",
   "password": "password123",
-  "email": "emmis@example.com"
+  "email": "erik@example.com"
 }
 
 ###
@@ -14,16 +14,23 @@ POST http://localhost:5000/api/login
 Content-Type: application/json
 
 {
-  "username": "johndeer",
+  "username": "johan",
   "password": "password123"
 }
 
 ###
 POST http://localhost:5000/api/logout
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5kZWVyIiwiaWF0IjoxNjkzOTIxNzU2LCJleHAiOjE2OTM5Mjg5NTZ9.rFb6Xpf0pHS9kuwn9iv4ZndkABGmhRZ5UxIa4n99F3Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaGFuIiwiaWF0IjoxNjk0MTU5NzkwLCJleHAiOjE2OTQxNjMzOTB9.rCLb9iSmgRuex_NReyA807gw9I3zc8ILLBZwFJhBo2c
 
 
 ###
 
 GET http://localhost:5000/api/products
+
+### 
+
+GET http://localhost:5000/api/refresh
+
+
+// JWT token dave gray: https://www.youtube.com/watch?v=favjC6EKFgw&t=252s

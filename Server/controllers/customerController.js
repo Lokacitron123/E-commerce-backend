@@ -53,42 +53,92 @@ const registerCustomer = async (req, res) => {
 };
 
 // Login function
-
 const loginCustomer = async (req, res) => {
   try {
     const { username, password } = req.body;
 
     const users = JSON.parse(fs.readFileSync(jsonFilePath));
-    const user = users.find((user) => user.username === username);
+    const foundUser = users.find((user) => user.username === username);
 
-    if (!user) {
+    if (!foundUser) {
       return res.status(401).json({ error: "Wrong credentials" });
     }
 
-    const passwordCheck = await bcrypt.compare(password, user.password);
+    const passwordCheck = await bcrypt.compare(password, foundUser.password);
 
     if (!passwordCheck) {
       return res.status(401).json({ Error: "Wrong password!" });
     }
 
-    const token = jwt.sign(
-      { username: user.username },
-      process.env.JWT_SECRET_KEY,
+    const accessToken = jwt.sign(
+      { username: foundUser.username },
+      process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "2h",
+        expiresIn: "1h",
       }
     );
 
-    res.status(200).json({ Message: "Login was successful", token });
+    const refreshToken = jwt.sign(
+      { username: foundUser.username },
+      process.env.REFRESH_TOKEN_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    // Saving refreshToken with current user
+    // Creates an array of the other users in our json database
+    const otherUsers = users.filter(
+      (user) => user.username !== foundUser.username
+    );
+    const currentUser = { ...foundUser, refreshToken };
+    const updatedUsers = [...otherUsers, currentUser]; // Fix here
+    fs.writeFileSync(jsonFilePath, JSON.stringify(updatedUsers, null, 2)); // Fix here
+
+    // Sending the refreshToken as an HTTP cookie because it can't be accessed by hackers with JavaScript
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      accessToken,
+      message: `${username} has logged in`,
+    });
   } catch (error) {
     res.status(500).json({ error: "Login failed. Please try again." });
   }
 };
 
-// Logout Customer function
 const logoutCustomer = async (req, res) => {
   try {
-    res.status(200).json({ message: "Logout successful" });
+    const cookies = req.cookies;
+    if (!cookies?.jwt) return res.sendStatus(204);
+    const refreshToken = cookies.jwt;
+
+    // Check if the refresh token is in our database
+    const users = JSON.parse(fs.readFileSync(jsonFilePath));
+    const foundUserIndex = users.findIndex(
+      (user) => user.refreshToken === refreshToken
+    );
+
+    if (foundUserIndex === -1) {
+      res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+      return res.sendStatus(204);
+    }
+
+    // Remove the refreshToken from the found user
+    const foundUser = users[foundUserIndex];
+    foundUser.refreshToken = "";
+
+    // Update the user in the array
+    users[foundUserIndex] = foundUser;
+
+    // Write the updated array back to the JSON file
+    fs.writeFileSync(jsonFilePath, JSON.stringify(users, null, 2));
+
+    res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.status(200).json(`The user ${foundUser.username} was logged out`);
   } catch (error) {
     console.error("Logout failed:", error);
     res.status(500).json({ error: "Logout failed" });
