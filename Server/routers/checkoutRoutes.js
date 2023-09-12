@@ -1,7 +1,7 @@
 const { registerPayment } = require("../controllers/checkoutController");
-const verifyToken = require("../middleware/authMiddleware");
+const verifyJWT = require("../middleware/verifyJWT");
 const router = require("express").Router();
 
-router.get("/payments", verifyToken, registerPayment);
+router.get("/payments", verifyJWT, registerPayment);
 
 module.exports = router;

@@ -8,18 +8,22 @@ const cors = require("cors");
 const customerRoutes = require("./routers/customerRoutes");
 const productRoutes = require("./routers/productRoutes");
 const checkoutRoutes = require("./routers/checkoutRoutes");
+const refreshRoutes = require("./routers/refreshRoutes");
 
 // Middleware
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-const PORT = process.env.PORT || 3000;
 
 //Routes
 app.use("/api", customerRoutes);
 app.use("/api", productRoutes);
 app.use("/api", checkoutRoutes);
+app.use("/api/refresh", refreshRoutes);
+
+// Server listening
+const PORT = process.env.PORT || 3000;
 
 try {
   app.listen(PORT, console.log(`Server is up and running on port: ${PORT}`));

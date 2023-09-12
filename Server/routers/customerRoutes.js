@@ -6,13 +6,13 @@ const {
   loginCustomer,
   logoutCustomer,
 } = require("../controllers/customerController");
-const verifyToken = require("../middleware/authMiddleware");
+const verifyJWT = require("../middleware/verifyJWT");
 
 // Login customer
 router.post("/login", loginCustomer);
 
 // Register customer
 router.post("/register", registerCustomer);
-router.post("/logout", verifyToken, logoutCustomer);
+router.post("/logout", verifyJWT, logoutCustomer);
 
 module.exports = router;

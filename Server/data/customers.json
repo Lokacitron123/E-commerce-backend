@@ -16,5 +16,44 @@
     "password": "$2a$10$n8DzgfAqBZD0i/Bq7ecJ2ueZbRCuzMeaSHNpy8QovjXI71w9gmLMa",
     "email": "emmis@example.com",
     "stripeCustomerId": "cus_Oa4XlBVUB1Zd37"
+  },
+  {
+    "username": "johan",
+    "password": "$2a$10$puSORYiCVYmmSavXndJ.Be/am.0urEXgFnV8a12L0aZaQvdpIM0bK",
+    "email": "johan@example.com",
+    "stripeCustomerId": "cus_Oat8uD5lg1xvZS",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaGFuIiwiaWF0IjoxNjk0MTYzMTE0LCJleHAiOjE2OTQyNDk1MTR9.cV3Ajs-CHeLixs1bJmayfaHilR5O4pLaPblfePoXvpY"
+  },
+  {
+    "username": "erik",
+    "password": "$2a$10$yuqj9FU4ylKE59lIGcduruILyi1POgvyap4VUl.px9H4cQXHg/qOW",
+    "email": "erik@example.com",
+    "stripeCustomerId": "cus_OatOzpX3wsdakh",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVyaWsiLCJpYXQiOjE2OTQxNzI1OTYsImV4cCI6MTY5NDI1ODk5Nn0.9ULrTWK1Ee9nRqlQIsu5Ku0FRDerd5BsV-O1RplFaXI"
+  },
+  {
+    "username": "homare",
+    "password": "$2a$10$/swjqHWR8/cbE/GE2cHtNOwxL/AcAdrp/hX9VycoEBidgfpYZz7XS",
+    "email": "homare@example.com",
+    "stripeCustomerId": "cus_ObG4TY20NXSkbf",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhvbWFyZSIsImlhdCI6MTY5NDE3NTU1MSwiZXhwIjoxNjk0MjYxOTUxfQ.XDBW9Vk4HZMbVWzRYXBpNHthuxrIWeMdVl7lgSmUqk0"
+  },
+  {
+    "username": "Per123",
+    "password": "$2a$10$y392MWa.RavuVQ.3rKzXxe5XR61MNWwo.eArnZJLMwU3oUhoaiqoq",
+    "email": "per@example.com",
+    "stripeCustomerId": "cus_ObGJOQDdhJnCuQ"
+  },
+  {
+    "username": "per123",
+    "password": "$2a$10$nBMxowXxW3aBAzaw5kgMJeId1FlKBQcA9PhgBQ2F97kikL5NG8Yny",
+    "email": "per@example.com",
+    "stripeCustomerId": "cus_ObHDRf48WRURC2"
+  },
+  {
+    "username": "kalle",
+    "password": "$2a$10$/xg.nHc3Yy2ckih2NaqDme3PoOMECBpsykBSmiOf5o/4vomF4zLdi",
+    "email": "kalle@example.com",
+    "stripeCustomerId": "cus_ObHKPCKP7vK63t"
   }
 ]
