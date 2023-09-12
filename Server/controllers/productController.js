@@ -24,6 +24,24 @@ const getProducts = async (req, res) => {
   }
 };
 
+const updateProductsInStock = async (req, res) => {
+  try {
+    const products = JSON.parse(fs.readFileSync(jsonFilePath, "utf-8"));
+    const productIndex = products.products.findIndex(
+      (product) => product.id === productId
+    );
+
+    if (productIndex !== -1) {
+      products.products[productIndex].stock -= quantity;
+    }
+
+    fs.writeFileSync(jsonFilePath, JSON.stringify(products, null, 2));
+  } catch (error) {
+    console.error("Error when updating products in stock:", error);
+  }
+};
+
 module.exports = {
   getProducts,
+  updateProductsInStock,
 };
