@@ -11,8 +11,20 @@ const { updateProductStock } = require("../helper/updateProductStock");
 
 const registerPayment = async (req, res) => {
   try {
+    const verifiedUser = req.user; // Kommer från verifyJWT middleware
+
     const cartProducts = req.body;
-    console.log(cartProducts);
+
+    if (!verifiedUser) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    const users = JSON.parse(fs.readFileSync(jsonFilePath));
+    const matchingUser = users.find((user) => user.username === verifiedUser);
+    if (!matchingUser) {
+      console.log("No matching user");
+      return;
+    }
 
     const session = await stripe.checkout.sessions.create({
       line_items: cartProducts.map((item) => {
@@ -22,17 +34,11 @@ const registerPayment = async (req, res) => {
         };
       }),
       mode: "payment",
+      customer: matchingUser.stripeCustomerId,
       success_url: `${CLIENT_URL}/confirmation`,
       cancel_url: CLIENT_URL,
     });
 
-    // if (session.status === "succeeded") {
-    //    updateProductStock(products);
-
-    //   res.json({ success: true, message: "Payment successful" });
-    // } else {
-    //   res.status(400).json({ success: false, message: "Payment failed" });
-    // }
     res.status(200).json({ url: session.url });
   } catch (error) {
     console.error("Payment error:", error);
