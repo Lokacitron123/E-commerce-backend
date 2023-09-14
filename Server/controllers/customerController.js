@@ -24,7 +24,7 @@ const registerCustomer = async (req, res) => {
 
     // Check if the username already exists
     const users = JSON.parse(fs.readFileSync(jsonFilePath));
-    const existingUser = users.find((u) => u.username === username);
+    const existingUser = users.find((user) => user.username === username);
     if (existingUser) {
       return res.status(400).json({ error: "Username already exists" });
     }
@@ -103,7 +103,8 @@ const loginCustomer = async (req, res) => {
 
     res.status(200).json({
       accessToken,
-      message: `${username} has logged in`,
+      foundUser,
+      message: `${foundUser} has logged in`,
     });
   } catch (error) {
     res.status(500).json({ error: "Login failed. Please try again." });
