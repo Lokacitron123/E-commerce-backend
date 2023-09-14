@@ -55,5 +55,19 @@
     "password": "$2a$10$/xg.nHc3Yy2ckih2NaqDme3PoOMECBpsykBSmiOf5o/4vomF4zLdi",
     "email": "kalle@example.com",
     "stripeCustomerId": "cus_ObHKPCKP7vK63t"
+  },
+  {
+    "username": "Johantest",
+    "password": "$2a$10$AWe10XhRIBrMUMMMybl49uc60r1DkaxhXebvOIsnDlmx5S0fKVpva",
+    "email": "johantest@test.se",
+    "stripeCustomerId": "cus_Od4A0iXemGumYo",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvaGFudGVzdCIsImlhdCI6MTY5NDYwOTcxMiwiZXhwIjoxNjk0Njk2MTEyfQ.jlCm8GJ807eHi8NNZPJ03_cxKT9pvOLa7Js8sdFaQqA"
+  },
+  {
+    "username": "hasse",
+    "password": "$2a$10$OMS9aOljEvKgV10SQt79Lu7TC49pyDrTm8Qs2BrDSAr7XQ0AEwlRO",
+    "email": "hasse@example.com",
+    "stripeCustomerId": "cus_Od8ys5PXB1HHUO",
+    "refreshToken": ""
   }
 ]

@@ -10,9 +10,14 @@ const productRoutes = require("./routers/productRoutes");
 const checkoutRoutes = require("./routers/checkoutRoutes");
 const refreshRoutes = require("./routers/refreshRoutes");
 
+// Cors config
+const corsOptions = {
+  origin: "*",
+};
+
 // Middleware
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
