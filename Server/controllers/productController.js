@@ -4,8 +4,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const stripe = require("stripe")(process.env.MY_STRIPE_KEY);
 
+const { updateProductStock } = require("../helper/updateProductStock");
+
 const path = require("path");
-const jsonFilePath = path.join(__dirname, "..", "data", "customers.json");
+const filePath = path.join(__dirname, "..", "data", "products.json"); // Corrected variable name
 
 // Get products
 
@@ -16,8 +18,11 @@ const getProducts = async (req, res) => {
       expand: ["data.default_price"],
     });
 
+    updateProductStock(products.data);
+
     res.json({ products });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ error: "There was an error trying to retrieve the products" });
@@ -26,18 +31,23 @@ const getProducts = async (req, res) => {
 
 const updateProductsInStock = async (req, res) => {
   try {
-    const products = JSON.parse(fs.readFileSync(jsonFilePath, "utf-8"));
-    const productIndex = products.products.findIndex(
-      (product) => product.id === productId
-    );
+    const purchasedProducts = req.body.purchasedProducts;
 
-    if (productIndex !== -1) {
-      products.products[productIndex].stock -= quantity;
-    }
+    const productsInStock = require(filePath);
 
-    fs.writeFileSync(jsonFilePath, JSON.stringify(products, null, 2));
+    purchasedProducts.forEach((purchasedProduct) => {
+      const updatedProduct = productsInStock.find(
+        (product) => product.id === purchasedProduct.id
+      );
+      if (updatedProduct) {
+        updatedProduct.quantity -= purchasedProduct.quantity; //
+      }
+    });
+
+    fs.writeFileSync(filePath, JSON.stringify(productsInStock, null, 2));
+    res.json({ success: true });
   } catch (error) {
-    console.error("Error when updating products in stock:", error);
+    res.status(500).json({ error: "Failed to update product quantities" });
   }
 };
 
