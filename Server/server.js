@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use("/api", customerRoutes);
 app.use("/api", productRoutes);
 app.use("/api", checkoutRoutes);
-app.use("/api/refresh", refreshRoutes);
+app.use("/api", refreshRoutes);
 
 // Server listening
 const PORT = process.env.PORT || 3000;

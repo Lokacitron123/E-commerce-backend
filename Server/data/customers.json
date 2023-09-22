@@ -68,6 +68,6 @@
     "password": "$2a$10$AWe10XhRIBrMUMMMybl49uc60r1DkaxhXebvOIsnDlmx5S0fKVpva",
     "email": "johantest@test.se",
     "stripeCustomerId": "cus_Od4A0iXemGumYo",
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvaGFudGVzdCIsImlhdCI6MTY5NDY5NzQ3NSwiZXhwIjoxNjk0NzgzODc1fQ.EDWZgej5mIVh7hjMibrxzrlW7UH9iCJAKI1b2Glc-2Q"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvaGFudGVzdCIsImlhdCI6MTY5NTM5MzgyNiwiZXhwIjoxNjk1OTk4NjI2fQ.JGFn1sK0YwSw-YO3kqA4JU8Td026ECl-LmSqcmZaWQQ"
   }
 ]

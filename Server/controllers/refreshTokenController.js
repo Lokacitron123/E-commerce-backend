@@ -11,11 +11,11 @@ const getRefreshToken = async (req, res) => {
   try {
     const cookies = req.cookies;
 
-    if (!cookies?.jwt) {
+    if (!cookies?.refreshToken) {
       return res.status(401);
     }
-    console.log(cookies.jwt);
-    const refreshToken = cookies.jwt;
+
+    const refreshToken = cookies.refreshToken;
 
     const users = JSON.parse(fs.readFileSync(jsonFilePath));
     const foundUser = users.find((user) => user.refreshToken === refreshToken);
@@ -30,7 +30,9 @@ const getRefreshToken = async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       (err, decoded) => {
         if (err || foundUser.username !== decoded.username) {
-          return res.status(403).json({ Error: "Invalid token" });
+          return res
+            .status(403)
+            .json({ error: "Invalid refresh token or username mismatch" });
         }
 
         const accessToken = jwt.sign(
