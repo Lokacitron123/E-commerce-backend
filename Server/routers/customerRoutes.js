@@ -5,14 +5,13 @@ const {
   registerCustomer,
   loginCustomer,
   logoutCustomer,
+  checkUser,
 } = require("../controllers/customerController");
 const verifyJWT = require("../middleware/verifyJWT");
 
-// Login customer
 router.post("/login", loginCustomer);
-
-// Register customer
 router.post("/register", registerCustomer);
 router.post("/logout", verifyJWT, logoutCustomer);
+router.get("/user", checkUser);
 
 module.exports = router;

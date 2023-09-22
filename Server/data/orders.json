@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": "cs_test_a1SMvvojrJhAmEnaCxA0XjeoWm01dwVU39zJZNhERJ6zCMppzOMYwXOJfk",
+    "created": 1695397023,
+    "customer": "Johantest",
+    "products": [
+      {
+        "product": "Nike Pegasus 40",
+        "quantity": 3,
+        "price": 1999
+      }
+    ]
+  }
+]

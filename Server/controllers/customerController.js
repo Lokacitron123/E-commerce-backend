@@ -82,7 +82,7 @@ const loginCustomer = async (req, res) => {
       { username: foundUser.username },
       process.env.REFRESH_TOKEN_SECRET,
       {
-        expiresIn: "1d",
+        expiresIn: "7d",
       }
     );
 
@@ -92,20 +92,20 @@ const loginCustomer = async (req, res) => {
       (user) => user.username !== foundUser.username
     );
     const currentUser = { ...foundUser, refreshToken };
-    const updatedUsers = [...otherUsers, currentUser]; // Fix here
-    fs.writeFileSync(jsonFilePath, JSON.stringify(updatedUsers, null, 2)); // Fix here
+    const updatedUsers = [...otherUsers, currentUser];
+    fs.writeFileSync(jsonFilePath, JSON.stringify(updatedUsers, null, 2));
 
     // Sending the refreshToken as an HTTP cookie because it can't be accessed by hackers with JavaScript
-    res.cookie("jwt", refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({
-      accessToken,
-      foundUser,
-      message: `${foundUser} has logged in`,
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
     });
+    res.status(200).json(currentUser);
   } catch (error) {
     res.status(500).json({ error: "Login failed. Please try again." });
   }
@@ -114,8 +114,8 @@ const loginCustomer = async (req, res) => {
 const logoutCustomer = async (req, res) => {
   try {
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(204);
-    const refreshToken = cookies.jwt;
+    if (!cookies?.refreshToken) return res.sendStatus(204);
+    const refreshToken = cookies.refreshToken;
 
     // Check if the refresh token is in our database
     const users = JSON.parse(fs.readFileSync(jsonFilePath));
@@ -138,7 +138,14 @@ const logoutCustomer = async (req, res) => {
     // Write the updated array back to the JSON file
     fs.writeFileSync(jsonFilePath, JSON.stringify(users, null, 2));
 
-    res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.status(200).json(`The user ${foundUser.username} was logged out`);
   } catch (error) {
     console.error("Logout failed:", error);
@@ -146,8 +153,24 @@ const logoutCustomer = async (req, res) => {
   }
 };
 
+const checkUser = async (req, res) => {
+  const accessToken = req.cookies.accessToken;
+
+  if (!accessToken) {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
+    if (error) {
+      return res.status(403).json({ error: "Invalid token" });
+    }
+    res.status(200).json({ message: "Authenticated", decoded: decoded });
+  });
+};
+
 module.exports = {
   registerCustomer,
   loginCustomer,
   logoutCustomer,
+  checkUser,
 };
