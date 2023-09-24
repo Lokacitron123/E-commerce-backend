@@ -47,7 +47,7 @@ const registerPayment = async (req, res) => {
 };
 
 const verifyPayment = async (req, res) => {
-  const verifiedUser = req.user; // Kommer från verifyJWT middleware
+  const verifiedUser = req.user;
 
   if (!verifiedUser) {
     return res.status(401).json({ error: "User not authenticated" });
@@ -66,8 +66,9 @@ const verifyPayment = async (req, res) => {
     console.log("Payment is: ", session.payment_status);
 
     if (session.payment_status === "paid") {
-      const order = await createOrder(sessionId, session);
+      await createOrder(sessionId, session);
       console.log("console logging order", order);
+
       res.status(200).json({ verified: true });
     } else {
       res.status(400).json({ verified: false });
@@ -84,26 +85,23 @@ const createOrder = async (sessionId, session) => {
   const products = await stripe.checkout.sessions.listLineItems(sessionId);
   console.log("Logging products after await stripe line items: ", products);
   const order = {
-    id: session.id,
-    created: session.created,
     customer: session.customer_details.name,
-    // products: products.data.map((item) => {
-    //   return {
-    //     product: item.description,
-    //     quantity: item.quantity,
-    //     price: item.price.unit_amount / 100,
-    //   };
-    // }),
+    created: new Date(session.created * 1000).toLocaleDateString(),
+    products: products.data.map((product) => {
+      return {
+        product: product.description,
+        price: product.price.unit_amount / 100,
+        quantity: product.quantity,
+      };
+    }),
   };
-
+  console.log("Console log order before sending to db: ", order);
   const oldOrders = JSON.parse(fs.readFileSync(ordersDB));
 
   const newOrders = [...oldOrders, order];
   fs.writeFileSync(ordersDB, JSON.stringify(newOrders, null, 2));
 
   console.log("Order created: ", order);
-
-  return order;
 };
 
 module.exports = {
