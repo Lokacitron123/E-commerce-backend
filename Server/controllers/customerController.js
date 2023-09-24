@@ -154,11 +154,13 @@ const logoutCustomer = async (req, res) => {
 };
 
 const checkUser = async (req, res) => {
-  const accessToken = req.cookies.accessToken;
+  const verifiedUser = req.user;
 
-  if (!accessToken) {
+  if (!verifiedUser) {
     return res.status(403).json({ message: "Unauthorized" });
   }
+
+  const accessToken = req.cookies.accessToken;
 
   jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
     if (error) {
