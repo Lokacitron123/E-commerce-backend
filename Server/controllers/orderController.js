@@ -9,7 +9,7 @@ const { updateProductStock } = require("../helper/updateProductStock");
 const path = require("path");
 const filePath = path.join(__dirname, "..", "data", "orders.json");
 
-const registerOrder = async (req, res) => {
+const getOrder = async (req, res) => {
   console.log(req.body.sessionId);
   // try {
   // } catch (error) {
@@ -18,5 +18,5 @@ const registerOrder = async (req, res) => {
 };
 
 module.exports = {
-  registerOrder,
+  getOrder,
 };

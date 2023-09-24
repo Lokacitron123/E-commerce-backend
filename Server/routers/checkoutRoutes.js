@@ -6,6 +6,6 @@ const verifyJWT = require("../middleware/verifyJWT");
 const router = require("express").Router();
 
 router.post("/payments", verifyJWT, registerPayment);
-// // router.post("/confirmation", verifyJWT, verifyPayment);
-router.post("/confirmation", verifyPayment);
+router.post("/confirmation", verifyJWT, verifyPayment);
+
 module.exports = router;
