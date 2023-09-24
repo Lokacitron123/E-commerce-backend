@@ -66,7 +66,7 @@ const verifyPayment = async (req, res) => {
     console.log("Payment is: ", session.payment_status);
 
     if (session.payment_status === "paid") {
-      const order = await createOrder(sessionId, session); // Invoke createOrder here
+      const order = await createOrder(sessionId, session);
       console.log("console logging order", order);
       res.status(200).json({ verified: true });
     } else {
@@ -79,24 +79,25 @@ const verifyPayment = async (req, res) => {
 };
 
 const createOrder = async (sessionId, session) => {
+  console.log("logging session id in createOrder: ", sessionId);
+  console.log("Logging session in createOrder: ", session);
   const products = await stripe.checkout.sessions.listLineItems(sessionId);
-
+  console.log("Logging products after await stripe line items: ", products);
   const order = {
-    id: sessionId,
+    id: session.id,
     created: session.created,
     customer: session.customer_details.name,
-    products: products.data.map((item) => {
-      return {
-        product: item.description,
-        quantity: item.quantity,
-        price: item.price.unit_amount / 100,
-      };
-    }),
+    // products: products.data.map((item) => {
+    //   return {
+    //     product: item.description,
+    //     quantity: item.quantity,
+    //     price: item.price.unit_amount / 100,
+    //   };
+    // }),
   };
 
-  // Parse DB
   const oldOrders = JSON.parse(fs.readFileSync(ordersDB));
-  // write orders to the database
+
   const newOrders = [...oldOrders, order];
   fs.writeFileSync(ordersDB, JSON.stringify(newOrders, null, 2));
 
