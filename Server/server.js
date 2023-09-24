@@ -9,6 +9,7 @@ const customerRoutes = require("./routers/customerRoutes");
 const productRoutes = require("./routers/productRoutes");
 const checkoutRoutes = require("./routers/checkoutRoutes");
 const refreshRoutes = require("./routers/refreshRoutes");
+const orderRoutes = require("./routers/orderRoutes");
 
 // Cors config
 const corsOptions = {
@@ -26,6 +27,7 @@ app.use("/api", customerRoutes);
 app.use("/api", productRoutes);
 app.use("/api", checkoutRoutes);
 app.use("/api", refreshRoutes);
+app.use("/api", orderRoutes);
 
 // Server listening
 const PORT = process.env.PORT || 3000;
