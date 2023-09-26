@@ -12,7 +12,7 @@ const { updateProductStock } = require("../helper/updateProductStock");
 
 const registerPayment = async (req, res) => {
   try {
-    const verifiedUser = req.user; // Kommer från verifyJWT middleware
+    const verifiedUser = req.user;
     const cartProducts = req.body;
 
     if (!verifiedUser) {
@@ -34,6 +34,7 @@ const registerPayment = async (req, res) => {
         };
       }),
       mode: "payment",
+      allow_promotion_codes: true,
       customer: matchingUser.stripeCustomerId,
       success_url: `${CLIENT_URL}/confirmation`,
       cancel_url: CLIENT_URL,
@@ -47,27 +48,15 @@ const registerPayment = async (req, res) => {
 };
 
 const verifyPayment = async (req, res) => {
-  const verifiedUser = req.user;
-
-  if (!verifiedUser) {
-    return res.status(401).json({ error: "User not authenticated" });
-  }
-
-  const sessionId = req.body.sessionId;
-  if (!sessionId) {
-    return res
-      .status(400)
-      .json({ verified: false, message: "Session ID is missing" });
-  }
-
   try {
+    const sessionId = req.body.sessionId;
+
     console.log("logging sessionID: ", sessionId);
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     console.log("Payment is: ", session.payment_status);
 
     if (session.payment_status === "paid") {
-      await createOrder(sessionId, session);
-      console.log("console logging order", order);
+      const order = await createOrder(sessionId, session);
 
       res.status(200).json({ verified: true });
     } else {
@@ -80,10 +69,8 @@ const verifyPayment = async (req, res) => {
 };
 
 const createOrder = async (sessionId, session) => {
-  console.log("logging session id in createOrder: ", sessionId);
-  console.log("Logging session in createOrder: ", session);
   const products = await stripe.checkout.sessions.listLineItems(sessionId);
-  console.log("Logging products after await stripe line items: ", products);
+  console.log("products after listLineItem", products);
   const order = {
     customer: session.customer_details.name,
     created: new Date(session.created * 1000).toLocaleDateString(),
@@ -95,7 +82,7 @@ const createOrder = async (sessionId, session) => {
       };
     }),
   };
-  console.log("Console log order before sending to db: ", order);
+
   const oldOrders = JSON.parse(fs.readFileSync(ordersDB));
 
   const newOrders = [...oldOrders, order];
